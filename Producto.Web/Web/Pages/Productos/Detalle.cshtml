@@ -1,0 +1,95 @@
+﻿@page
+@model Web.Pages.Productos.DetalleModel
+@{
+    ViewData["Title"] = "Detalle del producto";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-9">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                <div class="card-header text-white py-4" style="background: linear-gradient(135deg, #198754, #20c997);">
+                    <div class="text-center">
+                        <h1 class="h2 mb-1 fw-bold">Detalle del producto</h1>
+                        <p class="mb-0 opacity-75">Información completa del producto seleccionado</p>
+                    </div>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold text-primary mb-2">@Model.Producto.Nombre</h2>
+                        <div class="d-flex justify-content-center flex-wrap gap-2">
+                            <span class="badge bg-primary fs-6 px-3 py-2">@Model.Producto.Categoria</span>
+                            <span class="badge bg-info text-dark fs-6 px-3 py-2">@Model.Producto.SubCategoria</span>
+                        </div>
+                    </div>
+
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="p-4 rounded-4 border bg-light h-100">
+                                <h5 class="fw-bold mb-3 text-secondary">Información general</h5>
+
+                                <p class="mb-2">
+                                    <strong>Descripción:</strong><br />
+                                    <span class="text-muted">@Model.Producto.Descripcion</span>
+                                </p>
+
+                                <p class="mb-2">
+                                    <strong>Código de barras:</strong><br />
+                                    <span class="text-muted">@Model.Producto.CodigoBarras</span>
+                                </p>
+
+                                <p class="mb-0">
+                                    <strong>Stock disponible:</strong><br />
+                                    <span class="badge @(Model.Producto.Stock > 0 ? "bg-success" : "bg-danger") fs-6">
+                                        @Model.Producto.Stock unidades
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="p-4 rounded-4 border bg-light h-100">
+                                <h5 class="fw-bold mb-3 text-secondary">Precios</h5>
+
+                                <p class="mb-3">
+                                    <strong>Precio en colones:</strong><br />
+                                    <span class="fs-4 fw-bold text-success">₡@Model.Producto.Precio.ToString("N2")</span>
+                                </p>
+
+                                <p class="mb-0">
+                                    <strong>Precio en dólares:</strong><br />
+                                    <span class="fs-4 fw-bold text-primary">$@Model.Producto.PrecioUSD.ToString("N2")</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-5">
+                        <div class="d-flex flex-column flex-md-row justify-content-center gap-3">
+                            <a class="btn btn-outline-secondary btn-lg rounded-pill px-4" asp-page="./Index">
+                                Regresar
+                            </a>
+
+                            <a class="btn btn-warning text-white btn-lg rounded-pill px-4"
+                               asp-page="./Editar"
+                               asp-route-id="@Model.Producto.Id">
+                                Editar
+                            </a>
+
+                            <a class="btn btn-danger btn-lg rounded-pill px-4"
+                               asp-page="./Eliminar"
+                               asp-route-id="@Model.Producto.Id">
+                                Eliminar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-4 text-muted">
+                <small>Puedes volver al listado o continuar con la edición del producto.</small>
+            </div>
+        </div>
+    </div>
+</div>
