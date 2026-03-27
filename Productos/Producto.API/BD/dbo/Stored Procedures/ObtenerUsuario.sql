@@ -1,8 +1,8 @@
-﻿-- ============================================
+﻿-- ===========================================
 -- Author:		<Author,,Name>
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
--- ============================================
+-- ===========================================
 CREATE PROCEDURE [dbo].[ObtenerUsuario]
 	-- Add the parameters for the stored procedure here
 @NombreUsuario VARCHAR(MAX),
