@@ -1,0 +1,97 @@
+# This workflow will deploy SQL Server Database Project to Azure SQL Database
+#
+# To configure this workflow:
+#
+# 1. Create an Azure SQL Database in the Azure Portal
+# 2. Create a secret in your repository named AZURE_SQL_CONNECTION_STRING with your database connection string
+# 3. Create a secret in your repository named PaquetesTOKEN with your GitHub Packages token
+# 4. Update the environment variables below with your database details
+#
+# For more information on GitHub Actions for Azure: https://github.com/Azure/Actions
+# For more information on SQL Database deployment: https://docs.microsoft.com/en-us/azure/azure-sql/database/
+
+name: Deploy Productos Database to Azure SQL
+
+env:
+  AZURE_SQL_SERVER: progra2026.database.windows.net
+  AZURE_SQL_DATABASE: Productos
+  DACPAC_PATH: 'Productos/Producto.API/BD/bin/Release/BD.dacpac'
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'Productos/Producto.API/BD/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  build-and-deploy-database:
+    runs-on: windows-latest
+    environment:
+      name: 'Production-Database'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1
+
+      - name: Create NuGet.Config with GitHub Packages credentials
+        run: |
+          $content = @"
+          <?xml version="1.0" encoding="utf-8"?>
+          <configuration>
+            <packageSources>
+              <add key="github" value="https://nuget.pkg.github.com/SC-701/index.json" />
+            </packageSources>
+            <packageSourceCredentials>
+              <github>
+                <add key="Username" value="${{ github.actor }}" />
+                <add key="ClearTextPassword" value="${{ secrets.PaquetesTOKEN }}" />
+              </github>
+            </packageSourceCredentials>
+          </configuration>
+          "@
+          $content | Out-File -FilePath "Productos/Producto.API/NuGet.Config" -Encoding utf8
+        shell: powershell
+
+      - name: Restore NuGet packages
+        run: nuget restore "Productos/Producto.API/Producto.API.sln"
+
+      - name: Build Database Project
+        run: |
+          msbuild "Productos/Producto.API/BD/BD.sqlproj" /p:Configuration=Release /p:Platform="Any CPU" /p:OutputPath="./bin/Release/"
+        shell: cmd
+
+      - name: Verify DACPAC file exists
+        run: |
+          if (Test-Path "${{ env.DACPAC_PATH }}") {
+            Write-Host "DACPAC file found at ${{ env.DACPAC_PATH }}"
+            Get-Item "${{ env.DACPAC_PATH }}" | Format-List
+          } else {
+            Write-Error "DACPAC file not found at ${{ env.DACPAC_PATH }}"
+            exit 1
+          }
+        shell: powershell
+
+      - name: Deploy to Azure SQL Database
+        uses: azure/sql-action@v2
+        with:
+          connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+          path: ${{ env.DACPAC_PATH }}
+          action: 'publish'
+          arguments: '/p:DropObjectsNotInSource=false /p:BlockOnPossibleDataLoss=true /p:IgnoreRoleMembership=true'
+
+      - name: Database Deployment Summary
+        run: |
+          Write-Host "Database deployment completed successfully!"
+          Write-Host "Target Server: ${{ env.AZURE_SQL_SERVER }}"
+          Write-Host "Target Database: ${{ env.AZURE_SQL_DATABASE }}"
+        shell: powershell
