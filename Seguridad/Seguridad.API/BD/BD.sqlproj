@@ -6,8 +6,8 @@
     <Name>BD</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
-    <ProjectGuid>{2c8e4e09-f04b-4878-90d0-04e1134065b0}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
+    <ProjectGuid>{73e61dd7-788a-4aeb-9ba5-44525d2e996b}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.SqlAzureV12DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -61,13 +61,11 @@
     <Folder Include="dbo\Stored Procedures\" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="dbo\Tables\SubCategorias.sql" />
-    <Build Include="dbo\Tables\Producto.sql" />
-    <Build Include="dbo\Tables\Categorias.sql" />
-    <Build Include="dbo\Stored Procedures\ObtenerProductos.sql" />
-    <Build Include="dbo\Stored Procedures\ObtenerProducto.sql" />
-    <Build Include="dbo\Stored Procedures\EliminarProducto.sql" />
-    <Build Include="dbo\Stored Procedures\EditarProducto.sql" />
-    <Build Include="dbo\Stored Procedures\AgregarProducto.sql" />
+    <Build Include="dbo\Tables\Usuarios.sql" />
+    <Build Include="dbo\Tables\PerfilesxUsuario.sql" />
+    <Build Include="dbo\Tables\Perfiles.sql" />
+    <Build Include="dbo\Stored Procedures\ObtenerUsuario.sql" />
+    <Build Include="dbo\Stored Procedures\ObtenerPerfilesxUsuario.sql" />
+    <Build Include="dbo\Stored Procedures\AgregarUsuario.sql" />
   </ItemGroup>
 </Project>
