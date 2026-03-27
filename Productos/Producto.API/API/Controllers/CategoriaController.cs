@@ -1,7 +1,7 @@
 ﻿using Abstracciones.Interfaces.API;
 using Abstracciones.Interfaces.Flujo;
 using Microsoft.AspNetCore.Mvc;
-//Comentario de Prueba para Workflow
+//Comentario de Prueba para Workflow 2026
 namespace API.Controllers
 {
     [Route("api/[controller]")]
