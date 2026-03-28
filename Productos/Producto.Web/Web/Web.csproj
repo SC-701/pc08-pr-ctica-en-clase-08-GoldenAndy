@@ -7,8 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autorizacion.Abstracciones.Agr8" Version="1.0.0" />
+    <PackageReference Include="Autorizacion.DA.Agr8" Version="1.0.0" />
+    <PackageReference Include="Autorizacion.Flujo.Agr8" Version="1.0.0" />
+    <PackageReference Include="Autorizacion.Middleware.Agr8" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Abstracciones\Abstracciones.csproj" />
     <ProjectReference Include="..\Reglas\Reglas.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
 </Project>

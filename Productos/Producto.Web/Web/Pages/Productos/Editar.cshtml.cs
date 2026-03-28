@@ -1,13 +1,16 @@
 using Abstracciones.Interfaces.Reglas;
 using Abstracciones.Modelos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 
 namespace Web.Pages.Productos
 {
+    [Authorize]
     public class EditarModel : PageModel
     {
         private readonly IConfiguracion _configuracion;
@@ -98,7 +101,7 @@ namespace Web.Pages.Productos
             string metodo = _configuracion.ObtenerMetodo("ApiEndPoints", "EditarProducto");
             string endpoint = $"{urlBase}{string.Format(metodo, id.Value)}";
 
-            using var cliente = new HttpClient();
+            using var cliente = ObtenerClienteConToken();
 
             var json = JsonSerializer.Serialize(Producto);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -126,7 +129,7 @@ namespace Web.Pages.Productos
             string metodo = _configuracion.ObtenerMetodo("ApiEndPoints", "ObtenerProducto");
             string endpoint = $"{urlBase}{string.Format(metodo, id)}";
 
-            using var cliente = new HttpClient();
+            using var cliente = ObtenerClienteConToken();
             using var solicitud = new HttpRequestMessage(HttpMethod.Get, endpoint);
 
             var respuesta = await cliente.SendAsync(solicitud);
@@ -148,7 +151,7 @@ namespace Web.Pages.Productos
             string metodo = _configuracion.ObtenerMetodo("ApiEndPoints", "ObtenerCategorias");
             string endpoint = $"{urlBase}{metodo}";
 
-            using var cliente = new HttpClient();
+            using var cliente = ObtenerClienteConToken();
             using var solicitud = new HttpRequestMessage(HttpMethod.Get, endpoint);
 
             var respuesta = await cliente.SendAsync(solicitud);
@@ -183,7 +186,7 @@ namespace Web.Pages.Productos
             string metodo = _configuracion.ObtenerMetodo("ApiEndPoints", "ObtenerSubCategoriasPorCategoria");
             string endpoint = $"{urlBase}{string.Format(metodo, idCategoria)}";
 
-            using var cliente = new HttpClient();
+            using var cliente = ObtenerClienteConToken();
             using var solicitud = new HttpRequestMessage(HttpMethod.Get, endpoint);
 
             var respuesta = await cliente.SendAsync(solicitud);
@@ -217,6 +220,23 @@ namespace Web.Pages.Productos
         {
             var subcategorias = await ObtenerSubCategorias(idCategoria);
             return new JsonResult(subcategorias);
+        }
+
+        private HttpClient ObtenerClienteConToken()
+        {
+            var tokenClaim = HttpContext.User.Claims
+                .FirstOrDefault(c => c.Type == "AccessToken");
+
+            if (tokenClaim == null || string.IsNullOrWhiteSpace(tokenClaim.Value))
+            {
+                throw new Exception("No se encontró el claim AccessToken en el usuario autenticado.");
+            }
+
+            var cliente = new HttpClient();
+            cliente.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", tokenClaim.Value);
+
+            return cliente;
         }
     }
 }

@@ -4,127 +4,100 @@
     ViewData["Title"] = "Productos";
 }
 
-<div class="container py-5">
-    <div class="text-center mb-5">
-        <h1 class="display-5 fw-bold text-primary">Nuestra Tiendita de Productos</h1>
-        <p class="lead text-muted">
-            Explora el catálogo disponible y gestiona los productos de forma rápida y sencilla.
-        </p>
+<section class="productos-page py-5">
+    <div class="container">
+        <div class="productos-hero text-center mb-5">
+            <span class="productos-badge">Gestión de inventario</span>
+            <h1 class="productos-title mt-3">Catálogo de productos</h1>
+            <p class="productos-subtitle mx-auto">
+                Consulta, administra y da seguimiento a los productos registrados en el sistema.
+            </p>
 
-        <a type="button" class="btn btn-primary btn-lg shadow-sm px-4 mt-3" asp-page="./Agregar">
-            + Agregar producto
-        </a>
-    </div>
+            <a class="btn btn-productos-primary btn-lg mt-3" asp-page="./Agregar">
+                + Agregar producto
+            </a>
+        </div>
 
-    @if (Model.Productos != null && Model.Productos.Any())
-    {
-        <div class="row g-4">
-            @foreach (var producto in Model.Productos)
-            {
-                <div class="col-12 col-md-6 col-xl-4">
-                    <div class="card border-0 shadow-lg h-100 rounded-4 overflow-hidden producto-card">
-                        <div class="card-header bg-primary text-white text-center py-3">
-                            <h4 class="mb-0 fw-semibold">@producto.Nombre</h4>
-                        </div>
-
-                        <div class="card-body p-4">
-                            <p class="text-muted mb-3 text-center">
-                                <span class="badge bg-light text-dark border me-2">@producto.Categoria</span>
-                                <span class="badge bg-info text-dark">@producto.SubCategoria</span>
-                            </p>
-
-                            <div class="mb-3">
-                                <p class="mb-2">
-                                    <strong>Descripción:</strong><br />
-                                    <span class="text-secondary">@producto.Descripcion</span>
-                                </p>
-
-                                <p class="mb-2">
-                                    <strong>Precio:</strong>
-                                    <span class="text-success fw-bold">₡@producto.Precio.ToString("N2")</span>
-                                </p>
-
-                                <p class="mb-2">
-                                    <strong>Stock disponible:</strong>
-                                    <span class="badge @(producto.Stock > 0 ? "bg-success" : "bg-danger")">
-                                        @producto.Stock unidades
-                                    </span>
-                                </p>
-
-                                <p class="mb-0">
-                                    <strong>Código de barras:</strong><br />
-                                    <span class="text-muted">@producto.CodigoBarras</span>
-                                </p>
+        @if (Model.Productos != null && Model.Productos.Any())
+        {
+            <div class="row g-4">
+                @foreach (var producto in Model.Productos)
+                {
+                    <div class="col-12 col-md-6 col-xl-4">
+                        <div class="card producto-card h-100">
+                            <div class="producto-card-header">
+                                <h4 class="mb-0">@producto.Nombre</h4>
                             </div>
-                        </div>
 
-                        <div class="card-footer bg-white border-0 p-4 pt-0">
-                            <div class="d-grid gap-2">
-                                <a class="btn btn-outline-primary rounded-pill"
-                                   asp-page="./Detalle"
-                                   asp-route-id="@producto.Id">
-                                    Ver detalle
-                                </a>
+                            <div class="card-body p-4">
+                                <div class="producto-badges mb-3 text-center">
+                                    <span class="badge producto-badge-light">@producto.Categoria</span>
+                                    <span class="badge producto-badge-info">@producto.SubCategoria</span>
+                                </div>
 
-                                <div class="d-flex gap-2">
-                                    <a class="btn btn-warning text-white flex-fill rounded-pill"
-                                       asp-page="./Editar"
-                                       asp-route-id="@producto.Id">
-                                        Editar
+                                <div class="producto-info">
+                                    <p class="mb-3">
+                                        <strong>Descripción</strong><br />
+                                        <span class="text-muted">@producto.Descripcion</span>
+                                    </p>
+
+                                    <p class="mb-3">
+                                        <strong>Precio</strong><br />
+                                        <span class="producto-precio">₡@producto.Precio.ToString("N2")</span>
+                                    </p>
+
+                                    <p class="mb-3">
+                                        <strong>Stock disponible</strong><br />
+                                        <span class="badge @(producto.Stock > 0 ? "producto-stock-ok" : "producto-stock-empty")">
+                                            @producto.Stock unidades
+                                        </span>
+                                    </p>
+
+                                    <p class="mb-0">
+                                        <strong>Código de barras</strong><br />
+                                        <span class="text-muted">@producto.CodigoBarras</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="card-footer producto-card-footer">
+                                <div class="d-grid gap-2">
+                                    <a class="btn btn-productos-outline" asp-page="./Detalle" asp-route-id="@producto.Id">
+                                        Ver detalle
                                     </a>
 
-                                    <a class="btn btn-danger flex-fill rounded-pill"
-                                       asp-page="./Eliminar"
-                                       asp-route-id="@producto.Id">
-                                        Eliminar
-                                    </a>
+                                    <div class="d-flex gap-2">
+                                        <a class="btn btn-productos-warning flex-fill" asp-page="./Editar" asp-route-id="@producto.Id">
+                                            Editar
+                                        </a>
+
+                                        <a class="btn btn-productos-danger flex-fill" asp-page="./Eliminar" asp-route-id="@producto.Id">
+                                            Eliminar
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            }
-        </div>
-    }
-    else
-    {
-        <div class="d-flex justify-content-center">
-            <div class="card shadow-sm border-0 rounded-4 p-4 text-center" style="max-width: 500px;">
-                <div class="card-body">
-                    <h3 class="text-primary mb-3">No hay productos registrados</h3>
-                    <p class="text-muted mb-4">
-                        Parece que la tienda todavía está vacía. Agrega tu primer producto para comenzar.
-                    </p>
-                    <a class="btn btn-primary btn-lg rounded-pill px-4" asp-page="./Agregar">
-                        Crear primer producto
-                    </a>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="productos-empty-wrapper">
+                <div class="card productos-empty-card">
+                    <div class="card-body text-center p-5">
+                        <div class="productos-empty-icon mb-3">📦</div>
+                        <h3 class="productos-empty-title">No hay productos registrados</h3>
+                        <p class="productos-empty-text">
+                            Aún no se han agregado productos al sistema. Puedes crear el primero desde aquí.
+                        </p>
+                        <a class="btn btn-productos-primary btn-lg mt-2" asp-page="./Agregar">
+                            Crear primer producto
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
-</div>
-
-@* Estilos generados con IA para una apariencia llamativa *@
-<style>
-    .producto-card {
-        transition: transform 0.25s ease, box-shadow 0.25s ease;
-        background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
-    }
-
-    .producto-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.12) !important;
-    }
-
-    .card-header {
-        background: linear-gradient(135deg, #0d6efd, #4dabf7) !important;
-    }
-
-    .btn-outline-primary:hover,
-    .btn-warning:hover,
-    .btn-danger:hover,
-    .btn-primary:hover {
-        transform: scale(1.02);
-        transition: 0.2s ease-in-out;
-    }
-</style>
+        }
+    </div>
+</section>
