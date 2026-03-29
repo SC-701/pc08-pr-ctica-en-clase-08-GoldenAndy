@@ -1,99 +1,155 @@
-﻿@page
+﻿@page "{id:guid}"
 @model Web.Pages.Productos.EliminarModel
 @{
     ViewData["Title"] = "Eliminar producto";
 }
 
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-12 col-lg-8">
-            <form method="post">
-                <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
-                    <div class="card-header text-white py-4" style="background: linear-gradient(135deg, #dc3545, #ff6b6b);">
-                        <div class="text-center">
-                            <h1 class="h2 mb-1 fw-bold">Eliminar producto</h1>
-                            <p class="mb-0 opacity-75">Confirma si deseas eliminar este producto del catálogo</p>
-                        </div>
+<section class="eliminar-producto-page">
+    <div class="eliminar-orb orb-delete-a"></div>
+    <div class="eliminar-orb orb-delete-b"></div>
+
+    <div class="container py-4 py-lg-5">
+        <div class="eliminar-header text-center mb-4">
+            <span class="eliminar-badge">Acción delicada</span>
+            <h1 class="eliminar-title mt-3">Eliminar producto</h1>
+            <p class="eliminar-subtitle mx-auto">
+                Revisa cuidadosamente la información antes de confirmar la eliminación del producto del catálogo.
+            </p>
+        </div>
+
+        <div class="row g-4 align-items-stretch">
+            <div class="col-12 col-xl-4">
+                <aside class="eliminar-side-card h-100">
+                    <div class="eliminar-side-icon">🗑️</div>
+                    <h3 class="eliminar-side-title">Confirmación requerida</h3>
+                    <p class="eliminar-side-text">
+                        Esta acción eliminará el producto seleccionado. Antes de continuar, verifica sus datos
+                        y asegúrate de que realmente deseas quitarlo del sistema.
+                    </p>
+
+                    <div class="eliminar-warning-box">
+                        <span class="eliminar-warning-label">Importante</span>
+                        <p class="mb-0">
+                            Si todavía necesitas hacer ajustes, usa la opción de editar antes de eliminar.
+                        </p>
                     </div>
 
-                    <div class="card-body p-4 p-md-5">
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    <div class="eliminar-summary-card">
+                        <span class="eliminar-summary-label">Producto seleccionado</span>
+                        <h4 class="eliminar-summary-name">
+                            @(string.IsNullOrWhiteSpace(Model.Producto?.Nombre) ? "Producto sin nombre" : Model.Producto.Nombre)
+                        </h4>
+                    </div>
+                </aside>
+            </div>
 
-                        <div class="alert alert-warning border-0 rounded-4 shadow-sm mb-4">
-                            <strong>Atención:</strong> esta acción eliminará el producto seleccionado.
-                        </div>
-
-                        <div class="text-center mb-4">
-                            <h2 class="fw-bold text-danger mb-2">@Model.Producto.Nombre</h2>
-                            <div class="d-flex justify-content-center flex-wrap gap-2">
-                                <span class="badge bg-primary fs-6 px-3 py-2">@Model.Producto.Categoria</span>
-                                <span class="badge bg-info text-dark fs-6 px-3 py-2">@Model.Producto.SubCategoria</span>
+            <div class="col-12 col-xl-8">
+                <form method="post">
+                    <div class="eliminar-card">
+                        <div class="eliminar-card-header">
+                            <div>
+                                <span class="eliminar-card-kicker">Verificación final</span>
+                                <h2 class="eliminar-card-title">Resumen del producto</h2>
+                                <p class="eliminar-card-text mb-0">
+                                    Confirma que el registro a eliminar corresponde al producto correcto.
+                                </p>
                             </div>
                         </div>
 
-                        <div class="row g-4">
-                            <div class="col-md-6">
-                                <div class="p-4 rounded-4 border bg-light h-100">
-                                    <h5 class="fw-bold mb-3 text-secondary">Información general</h5>
+                        <div class="eliminar-card-body">
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger eliminar-validation-summary mb-4"></div>
 
-                                    <p class="mb-2">
-                                        <strong>Descripción:</strong><br />
-                                        <span class="text-muted">@Model.Producto.Descripcion</span>
-                                    </p>
+                            <div class="eliminar-alert mb-4">
+                                <strong>Atención:</strong> esta acción eliminará el producto seleccionado del catálogo.
+                            </div>
 
-                                    <p class="mb-2">
-                                        <strong>Código de barras:</strong><br />
-                                        <span class="text-muted">@Model.Producto.CodigoBarras</span>
-                                    </p>
+                            <div class="eliminar-producto-top text-center mb-4">
+                                <h2 class="eliminar-producto-nombre">
+                                    @Model.Producto.Nombre
+                                </h2>
 
-                                    <p class="mb-0">
-                                        <strong>Stock:</strong><br />
-                                        <span class="badge @(Model.Producto.Stock > 0 ? "bg-success" : "bg-danger") fs-6">
-                                            @Model.Producto.Stock unidades
-                                        </span>
-                                    </p>
+                                <div class="eliminar-badges">
+                                    <span class="badge eliminar-badge-primary">@Model.Producto.Categoria</span>
+                                    <span class="badge eliminar-badge-info">@Model.Producto.SubCategoria</span>
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="p-4 rounded-4 border bg-light h-100">
-                                    <h5 class="fw-bold mb-3 text-secondary">Precios</h5>
+                            <div class="row g-4">
+                                <div class="col-12 col-md-6">
+                                    <div class="eliminar-info-card h-100">
+                                        <h5 class="eliminar-info-title">Información general</h5>
 
-                                    <p class="mb-3">
-                                        <strong>Precio en colones:</strong><br />
-                                        <span class="fs-4 fw-bold text-success">₡@Model.Producto.Precio.ToString("N2")</span>
-                                    </p>
+                                        <div class="eliminar-info-item">
+                                            <span class="eliminar-info-label">Descripción</span>
+                                            <p class="eliminar-info-text mb-0">
+                                                @(string.IsNullOrWhiteSpace(Model.Producto.Descripcion)
+                                                                                                ? "Sin descripción registrada."
+                                                                                                : Model.Producto.Descripcion)
+                                            </p>
+                                        </div>
 
-                                    <p class="mb-0">
-                                        <strong>Precio en dólares:</strong><br />
-                                        <span class="fs-4 fw-bold text-primary">$@Model.Producto.PrecioUSD.ToString("N2")</span>
-                                    </p>
+                                        <div class="eliminar-info-item">
+                                            <span class="eliminar-info-label">Código de barras</span>
+                                            <span class="eliminar-info-text">
+                                                @(string.IsNullOrWhiteSpace(Model.Producto.CodigoBarras)
+                                                                                                ? "No registrado"
+                                                                                                : Model.Producto.CodigoBarras)
+                                            </span>
+                                        </div>
+
+                                        <div class="eliminar-info-item">
+                                            <span class="eliminar-info-label">Stock</span>
+                                            <span class="badge @(Model.Producto.Stock > 0 ? "eliminar-stock-ok" : "eliminar-stock-empty")">
+                                                @Model.Producto.Stock unidades
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <div class="eliminar-info-card h-100">
+                                        <h5 class="eliminar-info-title">Precios</h5>
+
+                                        <div class="eliminar-info-item">
+                                            <span class="eliminar-info-label">Precio en colones</span>
+                                            <span class="eliminar-precio-main">
+                                                ₡@Model.Producto.Precio.ToString("N2")
+                                            </span>
+                                        </div>
+
+                                        <div class="eliminar-info-item">
+                                            <span class="eliminar-info-label">Precio en dólares</span>
+                                            <span class="eliminar-precio-usd">
+                                                $@Model.Producto.PrecioUSD.ToString("N2")
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="d-flex flex-column flex-md-row gap-3 justify-content-center mt-5">
-                            <a class="btn btn-outline-secondary btn-lg rounded-pill px-4" asp-page="./Index">
-                                Regresar
-                            </a>
+                            <div class="eliminar-actions mt-5">
+                                <a class="btn btn-eliminar-secondary" asp-page="./Index">
+                                    Regresar
+                                </a>
 
-                            <a class="btn btn-warning text-white btn-lg rounded-pill px-4"
-                               asp-page="./Editar"
-                               asp-route-id="@Model.Producto.Id">
-                                Editar antes
-                            </a>
+                                <a class="btn btn-eliminar-warning"
+                                   asp-page="./Editar"
+                                   asp-route-id="@Model.Producto.Id">
+                                    Editar antes
+                                </a>
 
-                            <button type="submit" class="btn btn-danger btn-lg rounded-pill px-4 shadow-sm">
-                                Eliminar definitivamente
-                            </button>
+                                <button type="submit" class="btn btn-eliminar-danger">
+                                    Eliminar definitivamente
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="text-center mt-4 text-muted">
-                    <small>Verifica la información antes de confirmar la eliminación.</small>
-                </div>
-            </form>
+                    <div class="eliminar-footer-note text-center mt-4">
+                        Verifica la información antes de confirmar la eliminación.
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
+</section>

@@ -10,7 +10,7 @@ using System.Text.Json;
 
 namespace Web.Pages.Productos
 {
-    [Authorize]
+    [Authorize(Roles = "2")]
     public class EditarModel : PageModel
     {
         private readonly IConfiguracion _configuracion;

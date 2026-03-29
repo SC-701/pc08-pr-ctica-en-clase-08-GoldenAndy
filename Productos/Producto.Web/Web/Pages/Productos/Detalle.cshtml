@@ -4,92 +4,190 @@
     ViewData["Title"] = "Detalle del producto";
 }
 
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-12 col-lg-9">
-            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
-                <div class="card-header text-white py-4" style="background: linear-gradient(135deg, #198754, #20c997);">
-                    <div class="text-center">
-                        <h1 class="h2 mb-1 fw-bold">Detalle del producto</h1>
-                        <p class="mb-0 opacity-75">Información completa del producto seleccionado</p>
+<section class="productos-page">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-xl-10">
+
+                <div class="productos-hero mb-4">
+                    <div class="productos-hero-content text-center text-lg-start">
+                        <span class="productos-badge">
+                            <i class="bi bi-box-seam-fill me-2"></i>Detalle
+                        </span>
+                        <h1 class="productos-title mb-2">Detalle del producto</h1>
+                        <p class="productos-subtitle mb-0">
+                            Consulta toda la información registrada del producto seleccionado.
+                        </p>
                     </div>
                 </div>
 
-                <div class="card-body p-4 p-md-5">
-                    <div class="text-center mb-4">
-                        <h2 class="fw-bold text-primary mb-2">@Model.Producto.Nombre</h2>
-                        <div class="d-flex justify-content-center flex-wrap gap-2">
-                            <span class="badge bg-primary fs-6 px-3 py-2">@Model.Producto.Categoria</span>
-                            <span class="badge bg-info text-dark fs-6 px-3 py-2">@Model.Producto.SubCategoria</span>
-                        </div>
-                    </div>
+                <div class="card productos-card shadow-sm border-0 rounded-4 overflow-hidden">
+                    <div class="card-body p-4 p-lg-5">
 
-                    <div class="row g-4">
-                        <div class="col-md-6">
-                            <div class="p-4 rounded-4 border bg-light h-100">
-                                <h5 class="fw-bold mb-3 text-secondary">Información general</h5>
+                        <div class="row align-items-center g-4 mb-4">
+                            <div class="col-12 col-lg-8">
+                                <div class="productos-section-header">
+                                    <h2 class="productos-product-name mb-2">@Model.Producto.Nombre</h2>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="productos-pill productos-pill-primary">
+                                            <i class="bi bi-tag-fill me-1"></i>@Model.Producto.Categoria
+                                        </span>
+                                        <span class="productos-pill productos-pill-soft">
+                                            <i class="bi bi-tags-fill me-1"></i>@Model.Producto.SubCategoria
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
 
-                                <p class="mb-2">
-                                    <strong>Descripción:</strong><br />
-                                    <span class="text-muted">@Model.Producto.Descripcion</span>
-                                </p>
-
-                                <p class="mb-2">
-                                    <strong>Código de barras:</strong><br />
-                                    <span class="text-muted">@Model.Producto.CodigoBarras</span>
-                                </p>
-
-                                <p class="mb-0">
-                                    <strong>Stock disponible:</strong><br />
-                                    <span class="badge @(Model.Producto.Stock > 0 ? "bg-success" : "bg-danger") fs-6">
-                                        @Model.Producto.Stock unidades
-                                    </span>
-                                </p>
+                            <div class="col-12 col-lg-4">
+                                <div class="productos-price-box text-lg-end">
+                                    <div class="productos-price-label">Precio principal</div>
+                                    <div class="productos-price-main">₡@Model.Producto.Precio.ToString("N2")</div>
+                                    <div class="productos-price-secondary">$@Model.Producto.PrecioUSD.ToString("N2")</div>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="col-md-6">
-                            <div class="p-4 rounded-4 border bg-light h-100">
-                                <h5 class="fw-bold mb-3 text-secondary">Precios</h5>
+                        <div class="row g-4">
+                            <div class="col-12 col-lg-6">
+                                <div class="productos-detail-card h-100">
+                                    <div class="productos-detail-card-header">
+                                        <i class="bi bi-info-circle-fill me-2"></i>
+                                        Información general
+                                    </div>
 
-                                <p class="mb-3">
-                                    <strong>Precio en colones:</strong><br />
-                                    <span class="fs-4 fw-bold text-success">₡@Model.Producto.Precio.ToString("N2")</span>
-                                </p>
+                                    <div class="productos-detail-list">
+                                        <div class="productos-detail-item">
+                                            <span class="productos-detail-label">Nombre</span>
+                                            <span class="productos-detail-value">@Model.Producto.Nombre</span>
+                                        </div>
 
-                                <p class="mb-0">
-                                    <strong>Precio en dólares:</strong><br />
-                                    <span class="fs-4 fw-bold text-primary">$@Model.Producto.PrecioUSD.ToString("N2")</span>
-                                </p>
+                                        <div class="productos-detail-item">
+                                            <span class="productos-detail-label">Descripción</span>
+                                            <span class="productos-detail-value">
+                                                @(string.IsNullOrWhiteSpace(Model.Producto.Descripcion) ? "Sin descripción registrada." : Model.Producto.Descripcion)
+                                            </span>
+                                        </div>
+
+                                        <div class="productos-detail-item">
+                                            <span class="productos-detail-label">Categoría</span>
+                                            <span class="productos-detail-value">@Model.Producto.Categoria</span>
+                                        </div>
+
+                                        <div class="productos-detail-item">
+                                            <span class="productos-detail-label">Subcategoría</span>
+                                            <span class="productos-detail-value">@Model.Producto.SubCategoria</span>
+                                        </div>
+
+                                        <div class="productos-detail-item">
+                                            <span class="productos-detail-label">Código de barras</span>
+                                            <span class="productos-detail-value">
+                                                @(string.IsNullOrWhiteSpace(Model.Producto.CodigoBarras) ? "No registrado" : Model.Producto.CodigoBarras)
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-lg-6">
+                                <div class="productos-detail-card h-100">
+                                    <div class="productos-detail-card-header">
+                                        <i class="bi bi-cash-coin me-2"></i>
+                                        Inventario y precios
+                                    </div>
+
+                                    <div class="productos-detail-list">
+                                        <div class="productos-detail-item">
+                                            <span class="productos-detail-label">Stock disponible</span>
+                                            <span class="productos-detail-value">
+                                                @if (Model.Producto.Stock > 0)
+                                                {
+                                                    <span class="productos-stock productos-stock-ok">
+                                                        <i class="bi bi-check-circle-fill me-1"></i>@Model.Producto.Stock unidades
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="productos-stock productos-stock-empty">
+                                                        <i class="bi bi-x-circle-fill me-1"></i>Sin existencias
+                                                    </span>
+                                                }
+                                            </span>
+                                        </div>
+
+                                        <div class="productos-detail-item">
+                                            <span class="productos-detail-label">Precio en colones</span>
+                                            <span class="productos-detail-value productos-money-colones">
+                                                ₡@Model.Producto.Precio.ToString("N2")
+                                            </span>
+                                        </div>
+
+                                        <div class="productos-detail-item">
+                                            <span class="productos-detail-label">Precio en dólares</span>
+                                            <span class="productos-detail-value productos-money-dolares">
+                                                $@Model.Producto.PrecioUSD.ToString("N2")
+                                            </span>
+                                        </div>
+
+                                        <div class="productos-detail-item">
+                                            <span class="productos-detail-label">Estado de inventario</span>
+                                            <span class="productos-detail-value">
+                                                @if (Model.Producto.Stock > 15)
+                                                {
+                                                    <span class="productos-pill productos-pill-success">Stock saludable</span>
+                                                }
+                                                else if (Model.Producto.Stock > 0)
+                                                {
+                                                    <span class="productos-pill productos-pill-warning">Stock bajo</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="productos-pill productos-pill-danger">Agotado</span>
+                                                }
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="text-center mt-5">
-                        <div class="d-flex flex-column flex-md-row justify-content-center gap-3">
-                            <a class="btn btn-outline-secondary btn-lg rounded-pill px-4" asp-page="./Index">
-                                Regresar
-                            </a>
+                        <div class="productos-actions mt-5">
+                            <div class="row g-3 justify-content-center">
+                                <div class="col-12 col-md-4 col-lg-3">
+                                    <a class="btn btn-productos-secondary w-100"
+                                       asp-page="./Index">
+                                        <i class="bi bi-arrow-left-circle-fill me-2"></i>Regresar
+                                    </a>
+                                </div>
 
-                            <a class="btn btn-warning text-white btn-lg rounded-pill px-4"
-                               asp-page="./Editar"
-                               asp-route-id="@Model.Producto.Id">
-                                Editar
-                            </a>
+                                <div class="col-12 col-md-4 col-lg-3">
+                                    <a class="btn btn-productos-warning w-100"
+                                       asp-page="./Editar"
+                                       asp-route-id="@Model.Producto.Id">
+                                        <i class="bi bi-pencil-square me-2"></i>Editar
+                                    </a>
+                                </div>
 
-                            <a class="btn btn-danger btn-lg rounded-pill px-4"
-                               asp-page="./Eliminar"
-                               asp-route-id="@Model.Producto.Id">
-                                Eliminar
-                            </a>
+                                <div class="col-12 col-md-4 col-lg-3">
+                                    <a class="btn btn-productos-danger w-100"
+                                       asp-page="./Eliminar"
+                                       asp-route-id="@Model.Producto.Id">
+                                        <i class="bi bi-trash3-fill me-2"></i>Eliminar
+                                    </a>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
                 </div>
-            </div>
 
-            <div class="text-center mt-4 text-muted">
-                <small>Puedes volver al listado o continuar con la edición del producto.</small>
+                <div class="productos-footer-note text-center mt-4">
+                    <small>
+                        Puedes regresar al listado general o continuar administrando este producto.
+                    </small>
+                </div>
+
             </div>
         </div>
     </div>
-</div>
+</section>

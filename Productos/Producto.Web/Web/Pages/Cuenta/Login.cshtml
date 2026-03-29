@@ -4,71 +4,108 @@
     ViewData["Title"] = "Iniciar sesión";
 }
 
-<header class="subhead">
+<section class="login-page">
+    <div class="login-orb login-orb-1"></div>
+    <div class="login-orb login-orb-2"></div>
+    <div class="login-orb login-orb-3"></div>
+
     <div class="container">
-        <div class="masthead-subheading">SC-701: Programación Web Avanzada</div>
-        <div class="masthead-heading text-uppercase">Ejercicio persona</div>
-    </div>
-</header>
+        <div class="row justify-content-center align-items-center min-vh-100 py-5">
+            <div class="col-12 col-lg-10 col-xl-9">
+                <div class="login-shell">
+                    <div class="row g-0 align-items-stretch">
+                        <div class="col-12 col-lg-5">
+                            <div class="login-brand-panel h-100">
+                                <span class="login-badge">Acceso seguro</span>
 
-<section class="page-section bg-light" id="principal">
-    <div class="container">
-        <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto bg-white p-2 p-md-5 rounded shadow">
-            <div class="text-center">
-                <h2 class="section-heading text-uppercase">Iniciar sesión</h2>
-                <h3 class="section-subheading text-muted">
-                    Lorem ipsum dolor sit amet consectetur.
-                </h3>
-            </div>
+                                <h1 class="login-brand-title">
+                                    Web Productos
+                                </h1>
 
-            <form method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                                <p class="login-brand-text">
+                                    Inicia sesión para administrar el catálogo, controlar el inventario
+                                    y acceder a las funciones del sistema según tu rol.
+                                </p>
 
-                @if (Model.token is not null && Model.token.ValidacionExitosa == false)
-                {
-                    <div class="alert alert-warning" role="alert">
-                        Credenciales incorrectas.
+                                <div class="login-feature-list">
+                                    <div class="login-feature-item">
+                                        <span class="login-feature-icon">✓</span>
+                                        <span>Gestión de productos</span>
+                                    </div>
+                                    <div class="login-feature-item">
+                                        <span class="login-feature-icon">✓</span>
+                                        <span>Control por roles</span>
+                                    </div>
+                                    <div class="login-feature-item">
+                                        <span class="login-feature-icon">✓</span>
+                                        <span>Interfaz moderna y segura</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-7">
+                            <div class="login-form-panel">
+                                <div class="login-form-header text-center text-lg-start">
+                                    <span class="login-kicker">Bienvenido</span>
+                                    <h2 class="login-title">Iniciar sesión</h2>
+                                    <p class="login-subtitle">
+                                        Ingresa tus credenciales para continuar.
+                                    </p>
+                                </div>
+
+                                <form method="post" class="login-form">
+                                    <div asp-validation-summary="ModelOnly" class="alert alert-danger login-validation-summary mb-3"></div>
+
+                                    @if (Model.token is not null && Model.token.ValidacionExitosa == false)
+                                    {
+                                        <div class="login-alert-error mb-3" role="alert">
+                                            Credenciales incorrectas. Verifica tu usuario y contraseña.
+                                        </div>
+                                    }
+
+                                    <div class="mb-3">
+                                        <label class="form-label login-label" asp-for="loginInfo.NombreUsuario">Nombre de usuario</label>
+                                        <div class="login-input-wrap">
+                                            <span class="login-input-icon">👤</span>
+                                            <input type="text"
+                                                   asp-for="loginInfo.NombreUsuario"
+                                                   class="form-control login-input"
+                                                   placeholder="Ingresa tu nombre de usuario" />
+                                        </div>
+                                        <span asp-validation-for="loginInfo.NombreUsuario" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label login-label" asp-for="loginInfo.Password">Contraseña</label>
+                                        <div class="login-input-wrap">
+                                            <span class="login-input-icon">🔒</span>
+                                            <input type="password"
+                                                   asp-for="loginInfo.Password"
+                                                   class="form-control login-input"
+                                                   placeholder="Ingresa tu contraseña" />
+                                        </div>
+                                        <span asp-validation-for="loginInfo.Password" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="login-actions mt-4">
+                                        <button class="btn btn-login-primary" type="submit">
+                                            Iniciar sesión
+                                        </button>
+                                    </div>
+                                </form>
+
+                                <div class="login-footer-links">
+                                    <a asp-page="/Cuenta/Registro">Registrarse</a>
+                                    <a href="#!">Olvidó su contraseña</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                }
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text">
-                        <i class="bi bi-person-fill"></i>
-                    </span>
-                    <input type="text"
-                           placeholder="Nombre de usuario"
-                           asp-for="loginInfo.NombreUsuario"
-                           class="form-control form-control-lg" />
-                </div>
-                <div class="input-group mb-3">
-                    <span asp-validation-for="loginInfo.NombreUsuario" class="text-danger"></span>
                 </div>
 
-                <div class="input-group mb-3">
-                    <span class="input-group-text">
-                        <i class="bi bi-key"></i>
-                    </span>
-                    <input type="password"
-                           placeholder="Contraseña"
-                           asp-for="loginInfo.Password"
-                           class="form-control form-control-lg" />
-                </div>
-                <div class="input-group mb-3">
-                    <span asp-validation-for="loginInfo.Password" class="text-danger"></span>
-                </div>
-
-                <div class="d-grid gap-2">
-                    <button class="btn btn-primary" type="submit">Iniciar Sesión</button>
-                </div>
-            </form>
-
-            <div class="row">
-                <div class="col-12">
-                    <hr class="mt-5 mb-4 border-secondary-subtle" />
-                    <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-center">
-                        <a href="./registro" class="link-secondary text-decoration-none">Registrarse</a>
-                        <a href="#!" class="link-secondary text-decoration-none">Olvidó su contraseña</a>
-                    </div>
+                <div class="login-bottom-note text-center mt-4">
+                    Sistema de gestión con autenticación por roles.
                 </div>
             </div>
         </div>

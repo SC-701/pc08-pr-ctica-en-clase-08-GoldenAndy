@@ -4,94 +4,164 @@
     ViewData["Title"] = "Editar producto";
 }
 
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-12 col-lg-8">
-            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
-                <div class="card-header text-white py-4" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">
-                    <div class="text-center">
-                        <h1 class="h2 mb-1 fw-bold">Editar producto</h1>
-                        <p class="mb-0 opacity-75">Actualiza la información del producto seleccionado</p>
+<section class="editar-producto-page">
+    <div class="editar-orb orb-edit-a"></div>
+    <div class="editar-orb orb-edit-b"></div>
+
+    <div class="container py-4 py-lg-5">
+        <div class="editar-header text-center mb-4">
+            <span class="editar-badge">Edición de registro</span>
+            <h1 class="editar-title mt-3">Editar producto</h1>
+            <p class="editar-subtitle mx-auto">
+                Modifica la información del producto seleccionado y mantén actualizado el catálogo del sistema.
+            </p>
+        </div>
+
+        <div class="row g-4 align-items-stretch">
+            <div class="col-12 col-xl-4">
+                <aside class="editar-side-card h-100">
+                    <div class="editar-side-icon">✏️</div>
+                    <h3 class="editar-side-title">Actualizar producto</h3>
+                    <p class="editar-side-text">
+                        Realiza cambios en la categoría, subcategoría, precio, stock o demás datos del producto.
+                        Verifica cuidadosamente la información antes de guardar.
+                    </p>
+
+                    <div class="editar-summary-card">
+                        <span class="editar-summary-label">Producto actual</span>
+                        <h4 class="editar-summary-name">
+                            @(string.IsNullOrWhiteSpace(Model.Producto?.Nombre) ? "Producto sin nombre" : Model.Producto.Nombre)
+                        </h4>
+                    </div>
+
+                    <div class="editar-tips">
+                        <div class="editar-tip-item">
+                            <span class="editar-tip-label">Edición segura</span>
+                            <span class="editar-tip-value">Mantén consistencia en categoría y subcategoría</span>
+                        </div>
+
+                        <div class="editar-tip-item">
+                            <span class="editar-tip-label">Inventario</span>
+                            <span class="editar-tip-value">Ajusta el stock según la disponibilidad real</span>
+                        </div>
+
+                        <div class="editar-tip-item">
+                            <span class="editar-tip-label">Precio</span>
+                            <span class="editar-tip-value">Confirma el monto antes de guardar cambios</span>
+                        </div>
+
+                        <div class="editar-tip-item">
+                            <span class="editar-tip-label">Código</span>
+                            <span class="editar-tip-value">Valida el código de barras registrado</span>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+
+            <div class="col-12 col-xl-8">
+                <div class="editar-card">
+                    <div class="editar-card-header">
+                        <div>
+                            <span class="editar-card-kicker">Formulario de edición</span>
+                            <h2 class="editar-card-title">Actualizar información</h2>
+                            <p class="editar-card-text mb-0">
+                                Modifica los campos necesarios y guarda los cambios del producto.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="editar-card-body">
+                        <form method="post">
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger editar-validation-summary mb-4"></div>
+
+                            <div class="row g-3">
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label editar-label" asp-for="CategoriaSeleccionada">Categoría</label>
+                                    <select id="categorias"
+                                            asp-for="CategoriaSeleccionada"
+                                            class="form-select editar-input"
+                                            asp-items="Model.Categorias"
+                                            onchange="fetchSubCategorias()">
+                                        <option value="">Seleccione una categoría</option>
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="CategoriaSeleccionada"></span>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label editar-label" asp-for="Producto.IdSubCategoria">Subcategoría</label>
+                                    <select id="subcategorias"
+                                            asp-for="Producto.IdSubCategoria"
+                                            class="form-select editar-input"
+                                            asp-items="Model.SubCategorias">
+                                        <option value="">Seleccione una subcategoría</option>
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="Producto.IdSubCategoria"></span>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label editar-label" asp-for="Producto.Nombre">Nombre</label>
+                                    <input class="form-control editar-input"
+                                           asp-for="Producto.Nombre"
+                                           placeholder="Ej: Audífonos Gamer RGB" />
+                                    <span class="text-danger" asp-validation-for="Producto.Nombre"></span>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label editar-label" asp-for="Producto.Descripcion">Descripción</label>
+                                    <textarea class="form-control editar-input editar-textarea"
+                                              asp-for="Producto.Descripcion"
+                                              rows="4"
+                                              placeholder="Describe el producto"></textarea>
+                                    <span class="text-danger" asp-validation-for="Producto.Descripcion"></span>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label editar-label" asp-for="Producto.Precio">Precio</label>
+                                    <div class="editar-input-wrap">
+                                        <span class="editar-input-prefix">₡</span>
+                                        <input class="form-control editar-input editar-input-money"
+                                               asp-for="Producto.Precio"
+                                               placeholder="Ej: 18990" />
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="Producto.Precio"></span>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label editar-label" asp-for="Producto.Stock">Stock</label>
+                                    <input class="form-control editar-input"
+                                           asp-for="Producto.Stock"
+                                           placeholder="Ej: 12" />
+                                    <span class="text-danger" asp-validation-for="Producto.Stock"></span>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label editar-label" asp-for="Producto.CodigoBarras">Código de barras</label>
+                                    <input class="form-control editar-input"
+                                           asp-for="Producto.CodigoBarras"
+                                           placeholder="Ej: 1234567890123" />
+                                    <span class="text-danger" asp-validation-for="Producto.CodigoBarras"></span>
+                                </div>
+                            </div>
+
+                            <div class="editar-actions mt-4">
+                                <a class="btn btn-editar-secondary" asp-page="./Index">
+                                    Regresar
+                                </a>
+                                <button type="submit" class="btn btn-editar-primary">
+                                    Guardar cambios
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
 
-                <div class="card-body p-4 p-md-5">
-                    <form method="post">
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold" asp-for="CategoriaSeleccionada">Categoría</label>
-                            <select id="categorias"
-                                    asp-for="CategoriaSeleccionada"
-                                    class="form-select form-select-lg rounded-3"
-                                    asp-items="Model.Categorias"
-                                    onchange="fetchSubCategorias()">
-                                <option value="">Seleccione una categoría</option>
-                            </select>
-                            <span class="text-danger" asp-validation-for="CategoriaSeleccionada"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold" asp-for="Producto.IdSubCategoria">Subcategoría</label>
-                            <select id="subcategorias"
-                                    asp-for="Producto.IdSubCategoria"
-                                    class="form-select form-select-lg rounded-3"
-                                    asp-items="Model.SubCategorias">
-                                <option value="">Seleccione una subcategoría</option>
-                            </select>
-                            <span class="text-danger" asp-validation-for="Producto.IdSubCategoria"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold" asp-for="Producto.Nombre">Nombre</label>
-                            <input class="form-control form-control-lg rounded-3" asp-for="Producto.Nombre" placeholder="Ej: Audífonos Gamer" />
-                            <span class="text-danger" asp-validation-for="Producto.Nombre"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold" asp-for="Producto.Descripcion">Descripción</label>
-                            <textarea class="form-control rounded-3" asp-for="Producto.Descripcion" rows="4" placeholder="Describe el producto"></textarea>
-                            <span class="text-danger" asp-validation-for="Producto.Descripcion"></span>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label fw-semibold" asp-for="Producto.Precio">Precio</label>
-                                <input class="form-control form-control-lg rounded-3" asp-for="Producto.Precio" placeholder="Ej: 18990" />
-                                <span class="text-danger" asp-validation-for="Producto.Precio"></span>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label fw-semibold" asp-for="Producto.Stock">Stock</label>
-                                <input class="form-control form-control-lg rounded-3" asp-for="Producto.Stock" placeholder="Ej: 12" />
-                                <span class="text-danger" asp-validation-for="Producto.Stock"></span>
-                            </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label fw-semibold" asp-for="Producto.CodigoBarras">Código de barras</label>
-                            <input class="form-control form-control-lg rounded-3" asp-for="Producto.CodigoBarras" placeholder="Ej: 1234567890123" />
-                            <span class="text-danger" asp-validation-for="Producto.CodigoBarras"></span>
-                        </div>
-
-                        <div class="d-flex flex-column flex-md-row gap-3 justify-content-center">
-                            <a class="btn btn-outline-secondary btn-lg rounded-pill px-4" asp-page="./Index">
-                                Regresar
-                            </a>
-                            <button type="submit" class="btn btn-success btn-lg rounded-pill px-4 shadow-sm">
-                                Guardar cambios
-                            </button>
-                        </div>
-                    </form>
+                <div class="editar-footer-note text-center mt-4">
+                    Puedes cambiar la categoría, la subcategoría o cualquier dato del producto.
                 </div>
-            </div>
-
-            <div class="text-center mt-4 text-muted">
-                <small>Puedes cambiar la categoría, la subcategoría o cualquier dato del producto.</small>
             </div>
         </div>
     </div>
-</div>
+</section>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

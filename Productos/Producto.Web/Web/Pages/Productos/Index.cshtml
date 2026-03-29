@@ -2,63 +2,128 @@
 @model Web.Pages.Productos.IndexModel
 @{
     ViewData["Title"] = "Productos";
+
+    var totalProductos = Model.Productos?.Count() ?? 0;
+    var productosConStock = Model.Productos?.Count(p => p.Stock > 0) ?? 0;
+    var productosSinStock = Model.Productos?.Count(p => p.Stock <= 0) ?? 0;
 }
 
-<section class="productos-page py-5">
-    <div class="container">
-        <div class="productos-hero text-center mb-5">
-            <span class="productos-badge">Gestión de inventario</span>
-            <h1 class="productos-title mt-3">Catálogo de productos</h1>
-            <p class="productos-subtitle mx-auto">
-                Consulta, administra y da seguimiento a los productos registrados en el sistema.
-            </p>
+<section class="productos-page">
+    <div class="productos-orb orb-1"></div>
+    <div class="productos-orb orb-2"></div>
 
-            <a class="btn btn-productos-primary btn-lg mt-3" asp-page="./Agregar">
-                + Agregar producto
-            </a>
+    <div class="container">
+        <div class="productos-hero">
+            <div class="productos-hero-content">
+                <span class="productos-badge">
+                    Gestión inteligente de inventario
+                </span>
+
+                <h1 class="productos-title">
+                    Catálogo de productos
+                </h1>
+
+                <p class="productos-subtitle">
+                    Consulta, administra y da seguimiento a los productos registrados
+                    en el sistema desde una interfaz más visual, ordenada y moderna.
+                </p>
+
+                <div class="productos-hero-actions">
+                    <a class="btn btn-productos-primary btn-lg" asp-page="./Agregar">
+                        + Agregar producto
+                    </a>
+
+                    <a class="btn btn-productos-ghost btn-lg" href="#listado-productos">
+                        Ver catálogo
+                    </a>
+                </div>
+            </div>
+
+            <div class="productos-stats-grid">
+                <div class="producto-stat-card">
+                    <span class="producto-stat-label">Total registrados</span>
+                    <span class="producto-stat-value">@totalProductos</span>
+                </div>
+
+                <div class="producto-stat-card">
+                    <span class="producto-stat-label">Con stock</span>
+                    <span class="producto-stat-value">@productosConStock</span>
+                </div>
+
+                <div class="producto-stat-card">
+                    <span class="producto-stat-label">Sin stock</span>
+                    <span class="producto-stat-value">@productosSinStock</span>
+                </div>
+            </div>
         </div>
 
         @if (Model.Productos != null && Model.Productos.Any())
         {
+            <div class="productos-section-header" id="listado-productos">
+                <div>
+                    <h2 class="productos-section-title">Listado de productos</h2>
+                    <p class="productos-section-text">
+                        Explora la información principal de cada producto y accede rápidamente a sus acciones.
+                    </p>
+                </div>
+            </div>
+
             <div class="row g-4">
                 @foreach (var producto in Model.Productos)
                 {
                     <div class="col-12 col-md-6 col-xl-4">
-                        <div class="card producto-card h-100">
+                        <article class="card producto-card h-100">
+                            <div class="producto-card-topbar"></div>
+
                             <div class="producto-card-header">
-                                <h4 class="mb-0">@producto.Nombre</h4>
+                                <div class="producto-card-title-wrap">
+                                    <span class="producto-card-kicker">Producto</span>
+                                    <h4 class="mb-0">@producto.Nombre</h4>
+                                </div>
+
+                                <div class="producto-stock-indicator @(producto.Stock > 0 ? "in-stock" : "out-stock")">
+                                    @(producto.Stock > 0 ? "Disponible" : "Agotado")
+                                </div>
                             </div>
 
                             <div class="card-body p-4">
-                                <div class="producto-badges mb-3 text-center">
+                                <div class="producto-badges mb-4">
                                     <span class="badge producto-badge-light">@producto.Categoria</span>
                                     <span class="badge producto-badge-info">@producto.SubCategoria</span>
                                 </div>
 
-                                <div class="producto-info">
-                                    <p class="mb-3">
-                                        <strong>Descripción</strong><br />
-                                        <span class="text-muted">@producto.Descripcion</span>
-                                    </p>
+                                <div class="producto-info-grid">
+                                    <div class="producto-info-item producto-info-item-full">
+                                        <span class="producto-label">Descripción</span>
+                                        <p class="producto-description mb-0">
+                                            @(string.IsNullOrWhiteSpace(producto.Descripcion)
+                                                                                ? "Sin descripción registrada."
+                                                                                : producto.Descripcion)
+                                                                                                   </p>
+                                                                                               </div>
 
-                                    <p class="mb-3">
-                                        <strong>Precio</strong><br />
+                                    <div class="producto-info-item">
+                                        <span class="producto-label">Precio</span>
                                         <span class="producto-precio">₡@producto.Precio.ToString("N2")</span>
-                                    </p>
+                                    </div>
 
-                                    <p class="mb-3">
-                                        <strong>Stock disponible</strong><br />
+                                    <div class="producto-info-item">
+                                        <span class="producto-label">Stock disponible</span>
                                         <span class="badge @(producto.Stock > 0 ? "producto-stock-ok" : "producto-stock-empty")">
                                             @producto.Stock unidades
                                         </span>
-                                    </p>
+                                    </div>
 
-                                    <p class="mb-0">
-                                        <strong>Código de barras</strong><br />
-                                        <span class="text-muted">@producto.CodigoBarras</span>
-                                    </p>
-                                </div>
+                                    <div class="producto-info-item producto-info-item-full">
+                                        <span class="producto-label">Código de barras</span>
+                                        <span class="producto-codigo">
+                                            @(string.IsNullOrWhiteSpace(producto.CodigoBarras)
+                                                                                ? "No registrado"
+                                                                                : producto.CodigoBarras)
+                                </span>
                             </div>
+                        </div>
+                    </div>
 
                             <div class="card-footer producto-card-footer">
                                 <div class="d-grid gap-2">
@@ -77,9 +142,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </article>
                     </div>
-                }
+                        }
             </div>
         }
         else
@@ -90,7 +155,7 @@
                         <div class="productos-empty-icon mb-3">📦</div>
                         <h3 class="productos-empty-title">No hay productos registrados</h3>
                         <p class="productos-empty-text">
-                            Aún no se han agregado productos al sistema. Puedes crear el primero desde aquí.
+                            Aún no se han agregado productos al sistema. Puedes comenzar creando el primero.
                         </p>
                         <a class="btn btn-productos-primary btn-lg mt-2" asp-page="./Agregar">
                             Crear primer producto

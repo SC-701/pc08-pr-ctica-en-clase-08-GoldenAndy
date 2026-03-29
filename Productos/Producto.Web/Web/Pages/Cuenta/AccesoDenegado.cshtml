@@ -1,19 +1,28 @@
 ﻿@page
 @model Web.Pages.Cuenta.AccesoDenegadoModel
 @{
+    ViewData["Title"] = "Acceso denegado";
 }
-<header class="subhead">
-    <div class="container">
-        <div class="masthead-subheading">SC-701: Programación Web Avanzada</div>
-        <div class="masthead-heading text-uppercase">Ejercicio persona</div>
-    </div>
-</header>
-<section class="page-section bg-light">
-    <div class="text-center">
-        <h1 class="section-heading text-uppercase">403 </h1>
-        <h2 class="section-subheading text-muted">Acceso denegado</h2>
-    </div>
-    <div class="container py-5 h-100">
-        <img src="~/img/Amogus.png" alt="Acceso denegado" class="img-fluid rounded mx-auto d-block Denied" />
+
+<section class="denied-page">
+    <div class="denied-bg-glow glow-1"></div>
+    <div class="denied-bg-glow glow-2"></div>
+
+    <div class="denied-chaos-zone" id="chaosZone"></div>
+
+    <div class="denied-overlay-text" id="deniedOverlay">
+        <span class="denied-badge">403</span>
+        <h1 class="denied-title">¡Acceso Denegado!</h1>
+        <p class="denied-subtitle">
+            No tienes permisos para esta área
+        </p>
+
+        <div class="denied-actions">
+            <a asp-page="/Index" class="btn-denied-back">Regresar</a>
+        </div>
     </div>
 </section>
+
+@section Scripts {
+    <script src="~/js/AccesoDenegado.js"></script>
+}

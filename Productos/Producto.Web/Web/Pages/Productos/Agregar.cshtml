@@ -4,90 +4,150 @@
     ViewData["Title"] = "Agregar producto";
 }
 
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-12 col-lg-8">
-            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
-                <div class="card-header text-white py-4" style="background: linear-gradient(135deg, #0d6efd, #4dabf7);">
-                    <div class="text-center">
-                        <h1 class="h2 mb-1 fw-bold">Agregar producto</h1>
-                        <p class="mb-0 opacity-75">Registra un nuevo producto en tu catálogo</p>
+<section class="agregar-producto-page">
+    <div class="agregar-orb orb-a"></div>
+    <div class="agregar-orb orb-b"></div>
+
+    <div class="container py-4 py-lg-5">
+        <div class="agregar-header text-center mb-4">
+            <span class="agregar-badge">Nuevo registro</span>
+            <h1 class="agregar-title mt-3">Agregar producto</h1>
+            <p class="agregar-subtitle mx-auto">
+                Completa la información principal del producto para incorporarlo al catálogo del sistema.
+            </p>
+        </div>
+
+        <div class="row g-4 align-items-stretch">
+            <div class="col-12 col-xl-4">
+                <aside class="agregar-side-card h-100">
+                    <div class="agregar-side-icon">📦</div>
+                    <h3 class="agregar-side-title">Registro de producto</h3>
+                    <p class="agregar-side-text">
+                        Asegúrate de seleccionar correctamente la categoría y subcategoría, además de ingresar
+                        un precio, stock y código de barras válidos.
+                    </p>
+
+                    <div class="agregar-tips">
+                        <div class="agregar-tip-item">
+                            <span class="agregar-tip-label">Categoría</span>
+                            <span class="agregar-tip-value">Clasificación principal</span>
+                        </div>
+                        <div class="agregar-tip-item">
+                            <span class="agregar-tip-label">Subcategoría</span>
+                            <span class="agregar-tip-value">Detalle específico</span>
+                        </div>
+                        <div class="agregar-tip-item">
+                            <span class="agregar-tip-label">Stock</span>
+                            <span class="agregar-tip-value">Cantidad disponible</span>
+                        </div>
+                        <div class="agregar-tip-item">
+                            <span class="agregar-tip-label">Código de barras</span>
+                            <span class="agregar-tip-value">Identificador comercial</span>
+                        </div>
                     </div>
-                </div>
+                </aside>
+            </div>
 
-                <div class="card-body p-4 p-md-5">
-                    <form method="post">
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold" asp-for="CategoriaSeleccionada">Categoría</label>
-                            <select id="categorias"
-                                    asp-for="CategoriaSeleccionada"
-                                    class="form-select form-select-lg rounded-3"
-                                    asp-items="Model.Categorias"
-                                    onchange="fetchSubCategorias()">
-                                <option value="">Seleccione una categoría</option>
-                            </select>
-                            <span class="text-danger" asp-validation-for="CategoriaSeleccionada"></span>
+            <div class="col-12 col-xl-8">
+                <div class="agregar-card">
+                    <div class="agregar-card-header">
+                        <div>
+                            <span class="agregar-card-kicker">Formulario</span>
+                            <h2 class="agregar-card-title">Información del producto</h2>
+                            <p class="agregar-card-text mb-0">
+                                Ingresa los datos requeridos para guardar el nuevo producto.
+                            </p>
                         </div>
+                    </div>
 
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold" asp-for="Producto.IdSubCategoria">Subcategoría</label>
-                            <select id="subcategorias"
-                                    asp-for="Producto.IdSubCategoria"
-                                    class="form-select form-select-lg rounded-3"
-                                    asp-items="Model.SubCategorias">
-                                <option value="">Seleccione una subcategoría</option>
-                            </select>
-                            <span class="text-danger" asp-validation-for="Producto.IdSubCategoria"></span>
-                        </div>
+                    <div class="agregar-card-body">
+                        <form method="post">
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger agregar-validation-summary mb-4"></div>
 
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold" asp-for="Producto.Nombre">Nombre</label>
-                            <input class="form-control form-control-lg rounded-3" asp-for="Producto.Nombre" placeholder="Ej: Audífonos Gamer" />
-                            <span class="text-danger" asp-validation-for="Producto.Nombre"></span>
-                        </div>
+                            <div class="row g-3">
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label agregar-label" asp-for="CategoriaSeleccionada">Categoría</label>
+                                    <select id="categorias"
+                                            asp-for="CategoriaSeleccionada"
+                                            class="form-select agregar-input"
+                                            asp-items="Model.Categorias"
+                                            onchange="fetchSubCategorias()">
+                                        <option value="">Seleccione una categoría</option>
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="CategoriaSeleccionada"></span>
+                                </div>
 
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold" asp-for="Producto.Descripcion">Descripción</label>
-                            <textarea class="form-control rounded-3" asp-for="Producto.Descripcion" rows="4" placeholder="Describe el producto"></textarea>
-                            <span class="text-danger" asp-validation-for="Producto.Descripcion"></span>
-                        </div>
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label agregar-label" asp-for="Producto.IdSubCategoria">Subcategoría</label>
+                                    <select id="subcategorias"
+                                            asp-for="Producto.IdSubCategoria"
+                                            class="form-select agregar-input"
+                                            asp-items="Model.SubCategorias">
+                                        <option value="">Seleccione una subcategoría</option>
+                                    </select>
+                                    <span class="text-danger" asp-validation-for="Producto.IdSubCategoria"></span>
+                                </div>
 
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label fw-semibold" asp-for="Producto.Precio">Precio</label>
-                                <input class="form-control form-control-lg rounded-3" asp-for="Producto.Precio" placeholder="Ej: 18990" />
-                                <span class="text-danger" asp-validation-for="Producto.Precio"></span>
+                                <div class="col-12">
+                                    <label class="form-label agregar-label" asp-for="Producto.Nombre">Nombre</label>
+                                    <input class="form-control agregar-input"
+                                           asp-for="Producto.Nombre"
+                                           placeholder="Ej: Audífonos Gamer RGB" />
+                                    <span class="text-danger" asp-validation-for="Producto.Nombre"></span>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label agregar-label" asp-for="Producto.Descripcion">Descripción</label>
+                                    <textarea class="form-control agregar-input agregar-textarea"
+                                              asp-for="Producto.Descripcion"
+                                              rows="4"
+                                              placeholder="Describe las características principales del producto"></textarea>
+                                    <span class="text-danger" asp-validation-for="Producto.Descripcion"></span>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label agregar-label" asp-for="Producto.Precio">Precio</label>
+                                    <div class="agregar-input-wrap">
+                                        <span class="agregar-input-prefix">₡</span>
+                                        <input class="form-control agregar-input agregar-input-money"
+                                               asp-for="Producto.Precio"
+                                               placeholder="Ej: 18990" />
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="Producto.Precio"></span>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label agregar-label" asp-for="Producto.Stock">Stock</label>
+                                    <input class="form-control agregar-input"
+                                           asp-for="Producto.Stock"
+                                           placeholder="Ej: 12" />
+                                    <span class="text-danger" asp-validation-for="Producto.Stock"></span>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label agregar-label" asp-for="Producto.CodigoBarras">Código de barras</label>
+                                    <input class="form-control agregar-input"
+                                           asp-for="Producto.CodigoBarras"
+                                           placeholder="Ej: 1234567890123" />
+                                    <span class="text-danger" asp-validation-for="Producto.CodigoBarras"></span>
+                                </div>
                             </div>
 
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label fw-semibold" asp-for="Producto.Stock">Stock</label>
-                                <input class="form-control form-control-lg rounded-3" asp-for="Producto.Stock" placeholder="Ej: 12" />
-                                <span class="text-danger" asp-validation-for="Producto.Stock"></span>
+                            <div class="agregar-actions mt-4">
+                                <a class="btn btn-agregar-secondary" asp-page="./Index">
+                                    Regresar
+                                </a>
+                                <button type="submit" class="btn btn-agregar-primary">
+                                    Guardar producto
+                                </button>
                             </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label fw-semibold" asp-for="Producto.CodigoBarras">Código de barras</label>
-                            <input class="form-control form-control-lg rounded-3" asp-for="Producto.CodigoBarras" placeholder="Ej: 1234567890123" />
-                            <span class="text-danger" asp-validation-for="Producto.CodigoBarras"></span>
-                        </div>
-
-                        <div class="d-flex flex-column flex-md-row gap-3 justify-content-center">
-                            <a class="btn btn-outline-secondary btn-lg rounded-pill px-4" asp-page="./Index">
-                                Regresar
-                            </a>
-                            <button type="submit" class="btn btn-success btn-lg rounded-pill px-4 shadow-sm">
-                                Guardar producto
-                            </button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
